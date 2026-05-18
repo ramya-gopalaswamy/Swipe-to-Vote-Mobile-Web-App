@@ -83,6 +83,4 @@ The outfit catalog metadata is stored in SQLite and seeded through server/seedCa
 ---
 
 By: Ramya Gopalaswamy
-**Progress debugging:** `curl 'http://localhost:4000/api/my_votes?sessionId=YOUR_SLUG'`.
 
-**Schema:** **`users`** anchors identity; **`votes.session_id`** aligns with **`users.id`** for the username flow (no legacy FK so old random `session_id` values still work in the DB).
