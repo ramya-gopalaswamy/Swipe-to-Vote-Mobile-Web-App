@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply h-full bg-gala-ink font-sans text-gala-cream antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply m-0 h-full overflow-hidden;
+  }
+
+  :focus-visible {
+    @apply rounded-md outline outline-2 outline-offset-2 outline-gala-gold/40;
+  }
+
+  #root {
+    @apply mx-auto flex h-[100dvh] max-h-[100dvh] min-h-0 w-full max-w-[390px] flex-col overflow-hidden;
+  }
+
+  ::selection {
+    @apply bg-gala-gold/30 text-gala-cream;
+  }
+}
+
+@layer components {
+  .gala-ambient {
+    @apply bg-gala-ink bg-[radial-gradient(ellipse_120%_90%_at_50%_-18%,rgba(201,174,110,0.11),transparent_52%)];
+  }
+
+  .gala-eyebrow {
+    @apply text-[10px] font-semibold uppercase tracking-[0.42em] text-gala-gold;
+  }
+
+  .gala-screen-title {
+    @apply font-display text-[1.9rem] leading-[1.12] tracking-[-0.02em] text-gala-cream sm:text-[2.125rem];
+  }
+
+  .gala-lede {
+    @apply text-sm leading-[1.65] text-white/[0.72];
+  }
+
+  .gala-card {
+    @apply rounded-[1.75rem] border border-white/[0.09] bg-black/[0.48] shadow-gala-lg backdrop-blur-md;
+  }
+
+  .gala-pill {
+    @apply inline-flex items-center rounded-full border border-white/[0.1] bg-black/40 px-3 py-1.5 text-[11px] font-semibold tabular-nums text-gala-cream shadow-[inset_0_1px_0_rgba(255,255,255,0.06)];
+  }
+
+  .gala-btn-primary {
+    @apply rounded-2xl bg-gala-cream px-5 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-gala-ink shadow-gala transition duration-gala ease-gala hover:bg-white active:scale-[0.98];
+  }
+}
+
+@layer utilities {
+  .tap-highlight-none {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
