@@ -82,14 +82,7 @@ The outfit catalog metadata is stored in SQLite and seeded through server/seedCa
 
 ---
 
-## Reference
-
-**Environment:** `PORT`, `SQLITE_PATH` — see [`.env.example`](.env.example).
-
-**API validation (summary):** `express.json` body limit **24 KB**; usernames **`^[a-z0-9_-]{1,40}$`** after trim/lowercase; caps on id lengths; `choice` ∈ `yes` | `no`; `decisionTimeMs` non-negative and capped.
-
-**Results tab:** Crowd numbers come from **`GET /api/results`** (not from `localStorage`). **Analytics** uses **`GET /api/analytics`**. **Refresh** plus **5 s polling** while the tab is active.
-
+By: Ramya Gopalaswamy
 **Progress debugging:** `curl 'http://localhost:4000/api/my_votes?sessionId=YOUR_SLUG'`.
 
 **Schema:** **`users`** anchors identity; **`votes.session_id`** aligns with **`users.id`** for the username flow (no legacy FK so old random `session_id` values still work in the DB).
