@@ -23,21 +23,3 @@ The biggest weakness was that some first-pass solutions were overly confident or
 I used ChatGPT alongside Cursor for higher-level software engineering reasoning, architecture discussions, debugging explanations, prompting strategy, and reviewing how well the project aligned with the assessment rubric. ChatGPT was especially useful for refining prompts before sending them to Cursor, breaking the project into manageable vertical slices, evaluating trade-offs between backend options such as Supabase vs SQLite.
 
 ---
-
-## Supplementary technical reference (brief)
-
-### Username-based session identity
-
-Earlier builds generated a **random UUID** in the browser and never reconciled it across devices, so “same person / new browser” could not recover deck progress. The app now calls **`POST /api/sessions`** with a **normalized username** (trim, lowercase, `[a-z0-9_-]+`, max 40) and stores that canonical slug as **`sessionId`** in **`users.id`**. **No passwords or OAuth**—appropriate only for coursework demos (anyone can type any username).
-
-### Matches view (stretch)
-
-The **Matches** tab and `GET /api/matches` were added as an assessment stretch goal: items where the signed-in session voted **yes** and global yes-rate is **≥ 70%**, sorted by highest yes-rate. Implementation stays thin—one SQL query with a CTE for aggregates, one view component, and a third bottom-nav tab.
-
-### Polling vs websockets
-
-**Aggregate polling** (stretch): While **Results** or **Matches** is the active tab, the UI refreshes counts every **5 seconds** via `setInterval` and `fetch`—no websockets, no extra libraries. That is enough for a local demo and keeps the stack simple.
-
-### Basic analytics (stretch)
-
-**Analytics** was kept intentionally minimal: SQLite aggregates only (`COUNT`, `COUNT(DISTINCT …)`, `AVG`), one read-only route (`GET /api/analytics`), optional `decisionTimeMs` on vote insert, and a small readout on **Results**—no dashboards, charts, or auth. That preserves focus on stable core voting while still exposing crowd-level stats.
