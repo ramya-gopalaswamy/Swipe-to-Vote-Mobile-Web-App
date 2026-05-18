@@ -37,7 +37,7 @@ If the UI shows an **offline preview** banner, the backend is unreachable—vote
 - **Identity:** lightweight **username** sign-in—**`POST /api/sessions`** normalizes a username to a stable **`sessionId`** stored in **`users.id`**. **`localStorage`** only caches that id and display name; **votes live in SQLite**. No passwords or OAuth (demo-appropriate only).
 - **Reads/writes:** parameterized SQL on the server; duplicate votes per session+item are rejected via **`UNIQUE(session_id, item_id)`**.
 
-**Seed imagery:** first catalog entries use **Unsplash** ([license](https://unsplash.com/license)); placeholder arcs use **Lorem Picsum** ([picsum.photos](https://picsum.photos/)).
+**Catalog images (what’s in SQLite vs what the browser loads):** [`server/seedCatalog.js`](server/seedCatalog.js) inserts **`image_url`** values into **`items`**—**Unsplash** for the first three looks and **Lorem Picsum** for the rest ([Unsplash license](https://unsplash.com/license), [Picsum](https://picsum.photos/)). Those URLs live in the database as the seeded catalog metadata. In the running app, **`applyLocalLookImages`** in [`src/lib/localLookAssets.js`](src/lib/localLookAssets.js) **replaces** the first **100** rows’ display URLs with static files **`/looks/img1.png` … `/looks/img100.png`** served from **`public/looks/`** (swipe, **Results**, and **Matches** all use that client-side map). So graders see local assets by default; the remote URLs remain in SQLite if you inspect the API or remove the override. The seeded catalog has **100** items, all covered by that override; any extra rows you add would use their stored **`image_url`** unless you extend **`MAX_LOCAL_LOOK_IMAGES`**.
 
 ---
 
@@ -75,7 +75,6 @@ If the UI shows an **offline preview** banner, the backend is unreachable—vote
 - **Grading path:** forgetting Express or a **`PORT`** mismatch leaves the UI without `/api`—you’ll see offline behavior and **no vote persistence**.
 - **Offline / API down:** UI falls back to a small bundled sample deck; **no writes** until **`GET /api/items`** succeeds.
 - **SQLite** suits local single-machine demos; not positioned for heavy concurrency, HA, or production multi-tenant operations.
-- **Images** are mostly remote URLs (Unsplash/Picsum); needs network unless you point URLs at **`public/looks/`** or change the DB.
 - **Username-only identity:** anyone who uses the same normalized username shares history—**not** security. Legacy browsers may still hold an old random UUID in `localStorage` until sign-out; old **`votes`** rows can coexist.
 - **CORS** is permissive for local dev—tighten before exposing to untrusted origins.
 - **Catalog:** if **`items`** is already populated, auto-seed does not force exactly 100 new rows without clearing/migrating the DB.
